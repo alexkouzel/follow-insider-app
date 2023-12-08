@@ -1,6 +1,6 @@
-@import "/card-panel.css";
-@import "../components/tables.css";
-@import "../components/charts.css";
+@import "card-panel.css";
+@import "components/tables.css";
+@import "components/charts.css";
 
 :root {
     --panel-width: 42rem;

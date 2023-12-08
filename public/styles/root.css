@@ -1,8 +1,9 @@
-@import "shared/common.css";
-@import "shared/reset.css";
-@import "shared/typography.css";
+@import "global/helpers.css";
+@import "global/reset.css";
+@import "global/text.css";
 
-@import "layouts/footers.css";
+@import "components/header.css";
+@import "components/footer.css";
 
 :root {
     /* blue colors */
