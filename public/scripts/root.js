@@ -1,12 +1,18 @@
-export class Config {
-    static debugMode = location.hostname === '127.0.0.1';
+import { Config } from 'config.js'
+
+class UniqueID {
+    constructor() {
+        this.counter = 0;
+    }
+
+    get() {
+        return 'id-' + this.counter++;
+    }
 }
 
-// Keep track of the next unique id
-window.idCounter = 0;
-window.uniqueId = function () {
-    return 'id-' + idCounter++;
-}
+window.uniqueId = new UniqueID();
+
+// --------------------------------------------------------
 
 // Load scripts for header and footer
 const head = document.getElementsByTagName('head')[0];
@@ -18,3 +24,5 @@ function loadScript(head, url, isModule = false) {
     script.src = url;
     head.appendChild(script);
 }
+
+// --------------------------------------------------------

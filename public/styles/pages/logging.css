@@ -1,0 +1,16 @@
+@import "root.css";
+
+main {
+    margin: 4rem 0;
+    width: 95%;
+    gap: 1rem;
+}
+
+.stack-trace {
+    cursor: pointer;
+    padding: 2rem 0;
+}
+
+.stack-trace>p {
+    color: #999;
+}

@@ -4,11 +4,15 @@ export class Table {
     constructor(id, columns, props) {
         this.id = id;
         this.columns = columns;
-        this.props = props;
+
+        props = props ?? {};
         this.filters = props.filters;
         this.align = props.align ?? Array(columns.length).fill('start');
-        this.full = false;
+        this.padding_left = props.padding_left;
+        this.padding_right = props.padding_right;
+
         this.rowCount = 0;
+        this.full = false;
     }
 
     build() {
@@ -25,9 +29,9 @@ export class Table {
             <div id="${this.id}" class="table-wrapper scrollbar">
                 <table>
                     <thead><tr>
-                        <th style="width: ${this.props.padding_left ?? 'auto'}"></th>
+                        <th style="width: ${this.padding_left ?? 'auto'}"></th>
                         ${headerRow}
-                        <th style="width: ${this.props.padding_right ?? 'auto'}"></th>
+                        <th style="width: ${this.padding_right ?? 'auto'}"></th>
                     </tr></thead>
                     <tbody></tbody>
                 </table>
@@ -65,7 +69,7 @@ export class Table {
         this.loader.hide();
         const body = document.querySelector(`#${this.id} tbody`);
         rows.forEach(row => {
-            const rowRef = row.build(this.props.align);
+            const rowRef = row.build(this.align);
             body.appendChild(rowRef);
             this.rowCount++;
         });
@@ -83,13 +87,15 @@ export class Table {
 export class Row {
     constructor(id, cells, props) {
         this.id = id;
-        this.props = props ?? {};
         this.cells = cells.filter(cell => cell);
+
+        props = props ?? {};
+        this.color = props.color;
     }
 
     build(align) {
         let row = document.createElement('tr');
-        row.style.backgroundColor = this.props.color;
+        row.style.backgroundColor = this.color;
         row.id = this.id;
         row.appendChild(new Cell('', { max_width: 0 }).build())
         for (let i = 0; i < this.cells.length; i++) {
@@ -103,7 +109,8 @@ export class Row {
 export class Cell {
     constructor(text, props) {
         this.text = text;
-        this.props = props ?? {};
+
+        props = props ?? {};
     }
 
     build(align) {
@@ -123,6 +130,8 @@ export class Cell {
 export class Checkbox {
     constructor(label, props) {
         this.label = label;
+
+        props = props ?? {};
         this.checked = props.checked ?? false;
         this.color = props.color;
     }
