@@ -7,7 +7,7 @@ export function postJson(url, json) {
 }
 
 export function postForm(url, form) {
-    contentType = 'application/x-www-form-urlencoded;charset=UTF-8';
+    let contentType = 'application/x-www-form-urlencoded;charset=UTF-8';
     return postData(url, contentType, new URLSearchParams(form));
 }
 
@@ -17,6 +17,14 @@ export function getText(url) {
 
 export function getJson(url) {
     return getData(url, 'application/json', data => data.json());
+}
+
+export function getEntity(url, convert) {
+    return convert(getJson(url));
+}
+
+export function getEntities(url, convert) {
+    return getJson(url).map(obj => convert(obj));
 }
 
 async function postData(url, contentType, body) {

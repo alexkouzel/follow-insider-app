@@ -1,0 +1,8 @@
+@import "/styles/root.css";
+@import "/styles/components/footer.css";
+@import "/styles/components/table.css";
+
+main {
+    margin-top: 5rem;
+    width: 60%;
+}

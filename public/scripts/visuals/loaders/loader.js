@@ -1,14 +1,24 @@
 export class Loader {
     constructor(container) {
-        this.loader = this._build();
-        container.appendChild(this.loader);
+        this.tag = this._build();
+        container.appendChild(this.tag);
     }
 
     _build() {
-        let loader = document.createElement('div');
-        loader.classList.add('abs-ctr');
-        loader.innerHTML = '<div class="lds-facebook"><div></div><div></div><div></div></div>';
-        return loader;
+        let tag = document.createElement('div');
+        tag.classList.add('abs-ctr');
+        tag.innerHTML = '<div class="lds-facebook"><div></div><div></div><div></div></div>';
+        return tag;
+    }
+
+    hideIfVisible() {
+        if (this.isVisible()) {
+            this.hide();
+        }
+    }
+
+    isVisible() {
+        return false;
     }
 
     show() {
@@ -20,6 +30,6 @@ export class Loader {
     }
 
     remove() {
-        this.loader.remove();
+        this.tag.remove();
     }
 }

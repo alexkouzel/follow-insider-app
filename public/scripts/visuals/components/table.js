@@ -1,170 +1,190 @@
-import { Loader } from '/scripts/blocks/loader.js';
+import { Loader } from '/scripts/visuals/loaders/loader.js';
 
+/* props: align */
 export class Table {
-    constructor(id, columns, props) {
-        this.id = id;
+    constructor(columns, props) {
         this.columns = columns;
-
-        props = props ?? {};
-        this.filters = props.filters;
-        this.align = props.align ?? Array(columns.length).fill('start');
-        this.padding_left = props.padding_left;
-        this.padding_right = props.padding_right;
-
         this.rowCount = 0;
         this.full = false;
+
+        props = props ?? {};
+        props.align = props.align ?? Array(columns.length).fill('start');
+        props.padding_left = props.padding_left ?? 'auto'
+        this.props = props ?? {};
+
+        this.tag = this._build();
+        this.loader = new Loader(this.tag);
+
+        if (this.props.initialData) {
+            this.addRows(props.initialData);
+        }
     }
 
-    build() {
-        const table = document.createElement('div');
-
-        if (this.filters) {
-            table.appendChild(this.filters.build());
-        }
-
-        let headerRow = this.columns.map((label, i) => 
-            `<th style="text-align: ${this.align[i]}">${label}</th>`).join('');
-
-        table.innerHTML += `
-            <div id="${this.id}" class="table-wrapper scrollbar">
-                <table>
-                    <thead><tr>
-                        <th style="width: ${this.padding_left ?? 'auto'}"></th>
-                        ${headerRow}
-                        <th style="width: ${this.padding_right ?? 'auto'}"></th>
-                    </tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>`;
-
-        const wrapper = table.querySelector('#' + this.id);
-        this.loader = new Loader(wrapper);
-        return table;
+    addRows(rows) {
+        this.loader.hideIfVisible();
+        const body = this.tag.querySelector('tbody');
+        rows.forEach(row => {
+            body.appendChild(row.build(this.props.align));
+            this.rowCount++;
+        });
     }
 
     onFull() {
-        this.loader.hide();
+        this.loader.hideIfVisible();
         if (this.rowCount === 0) {
-            document.getElementById(this.id).innerHTML += `
+            this.tag.innerHTML += `
                 <div class='abs-ctr empty-state'>
                     <img src='/assets/icons/empty-box.svg' alt="table error">
                     <h3>Whoops!</h3>
                     <p>No data available at the moment</p>
-                <div>`
+                <div>
+            `;
         }
         this.full = true;
     }
 
     onError() {
-        this.loader.hide();
-        document.getElementById(this.id).innerHTML += `
+        this.loader.hideIfVisible();
+        this.tag.innerHTML += `
             <div class='abs-ctr empty-state'>
                 <img src='/assets/icons/empty-cloud.svg' alt="table error">
                 <h3>Nooooo!</h3>
                 <p>Something went wrong on the server</p>
-            <div>`;
-    }
-
-    addRows(rows) {
-        this.loader.hide();
-        const body = document.querySelector(`#${this.id} tbody`);
-        rows.forEach(row => {
-            const rowRef = row.build(this.align);
-            body.appendChild(rowRef);
-            this.rowCount++;
-        });
+            <div>
+        `;
     }
 
     reset() {
-        this.full = false;
-        this.rowCount = 0;
-        document.querySelector(`#${this.id} .empty-state`)?.remove();
-        document.querySelector(`#${this.id} tbody`).innerHTML = '';
+        this.tag.querySelector('.empty-state')?.remove();
+        this.tag.querySelector('tbody').innerHTML = '';
+
         this.loader.show();
+        this.rowCount = 0;
+    }
+
+    _build() {
+        let headerRow = this.columns.map(
+            (label, i) => `<th style="text-align: ${this.props.align[i]}">${label}</th>`
+        ).join('');
+
+        let wrapper = document.createElement('div');
+        wrapper.classList.add('table-wrapper', 'scrollbar');
+        wrapper.innerHTML = `
+            <table>
+                <thead><tr>${headerRow}</tr></thead>
+                <tbody></tbody>
+            </table>
+        `;
+
+        // table = wrapper + filters
+        const table = document.createElement('div');
+        
+        if (this.props.filters) {
+            let filters = this.props.filters.build();
+            table.appendChild(filters);
+        }
+        table.appendChild(wrapper);
+        return table;
     }
 }
 
+/* props: color */
 export class Row {
-    constructor(id, cells, props) {
-        this.id = id;
-        this.cells = cells.filter(cell => cell);
-
-        props = props ?? {};
-        this.color = props.color;
+    constructor(cells, props) {
+        this.cells = cells;
+        this.props = props ?? {};
     }
 
     build(align) {
         let row = document.createElement('tr');
-        row.style.backgroundColor = this.color;
-        row.id = this.id;
-        row.appendChild(new Cell('', { max_width: 0 }).build())
-        for (let i = 0; i < this.cells.length; i++) {
-            row.appendChild(this.cells[i].build(align[i]));
+
+        if (this.props.color) {
+            row.style.backgroundColor = this.props.color;
         }
-        row.appendChild(new Cell('', { max_width: 0 }).build())
+
+        for (let i = 0; i < this.cells.length; i++) {
+            let cell = this.cells[i].build(align[i]);
+            row.appendChild(cell);
+        }
         return row;
     }
 }
 
+/* props: onclick, color, max_width, min_width, class */
 export class Cell {
-    constructor(text, props) {
-        this.text = text;
-
-        props = props ?? {};
+    constructor(value, props) {
+        this.value = value;
+        this.props = props ?? {};
     }
 
     build(align) {
         let cell = document.createElement('td');
-        if (this.props.onclick) cell.onclick = this.props.onclick;
-        if (this.props.color) cell.style.color = this.props.color;
-        if (this.props.max_width) cell.style.maxWidth = this.props.max_width;
-        if (this.props.min_width) cell.style.minWidth = this.props.min_width;
-        if (this.props.class) cell.classList.add(this.props.class);
-        if (this.props.id) cell.id = this.props.id;
+
+        if (this.props.onclick) {
+            cell.onclick = this.props.onclick;
+        }
+        if (this.props.color) {
+            cell.style.color = this.props.color;
+        }
+        if (this.props.max_width) {
+            cell.style.maxWidth = this.props.max_width;
+        }
+        if (this.props.min_width) {
+            cell.style.minWidth = this.props.min_width;
+        }
+        if (this.props.class) {
+            cell.classList.add(this.props.class);
+        }
         cell.style.textAlign = align;
-        cell.innerText = this.text;
+        cell.innerText = this.value;
+
         return cell;
     }
 }
 
+// ---------------------------------------------------------------------
+
+/* props: checked, color */
 export class Checkbox {
     constructor(label, props) {
         this.label = label;
 
-        props = props ?? {};
-        this.checked = props.checked ?? false;
-        this.color = props.color;
+        this.props = props ?? {};
+        this.props.checked = props.checked ?? false;
     }
 
     build() {
-        let box = document.createElement('div');
+        let tag = document.createElement('div');
+
         let input = document.createElement('input');
-        let label = document.createElement('label');
         input.type = 'checkbox';
         input.id = this.label;
         input.name = this.label.toUpperCase();
         input.click();
-        label.style.color = this.color;
+        tag.appendChild(input);
+
+        let label = document.createElement('label');
+        label.style.color = this.props.color;
         label.innerText = this.label;
         label.setAttribute('for', this.label);
-        box.appendChild(input);
-        box.appendChild(label);
-        return box;
+        tag.appendChild(label);
+
+        return tag;
     }
 }
 
 export class CheckboxFilters {
-    constructor(id, boxes) {
-        this.id = id;
+    constructor(boxes) {
+        this.id = window.uniqueId.get();
         this.boxes = boxes;
     }
 
     build() {
-        let filters = document.createElement('div');
-        this.boxes.forEach(box => filters.appendChild(box.build()));
-        filters.classList.add('filters');
-        filters.id = this.id;
-        return filters;
+        let tag = document.createElement('div');
+        this.boxes.forEach(box => tag.appendChild(box.build()));
+        tag.classList.add('filters');
+        tag.id = this.id;
+        return tag;
     }
 
     onselect(func) {

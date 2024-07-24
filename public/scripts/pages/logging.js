@@ -1,13 +1,11 @@
 import { formatDate } from '/scripts/common/utils/string.js';
 import { Logs } from '/scripts/client/endpoints.js'
 
-initLogs(main);
-
-function initLogs() {
+(function () {
     let container = document.querySelector('main');
     let logs = Logs.getAll()
     insertLogs(logs, container);
-}
+});
 
 let LOG_COLORS = {
     'TRACE': '#8a50a9',
@@ -44,7 +42,7 @@ function insertLog(log, container) {
 function insertStackTrace(stack_trace, container) {
     let throwPaths = stack_trace.split('\n');
     let stackTrace = document.createElement('div');
-    
+
     stackTrace.classList.add('stack-trace');
     stackTrace.innerHTML = `<p>${throwPaths[0]} ...</p>`;
 

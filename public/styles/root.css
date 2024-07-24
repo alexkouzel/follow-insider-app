@@ -1,9 +1,6 @@
-@import "global/helpers.css";
-@import "global/reset.css";
-@import "global/text.css";
-
-@import "components/header.css";
-@import "components/footer.css";
+@import "common/helpers.css";
+@import "common/reset.css";
+@import "common/text.css";
 
 :root {
     /* blue colors */

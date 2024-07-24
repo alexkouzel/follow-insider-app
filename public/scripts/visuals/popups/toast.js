@@ -5,10 +5,11 @@ export class Toast {
         if (document.querySelector('.toast') !== null)
             return;
 
-        props = props ?? {};
-        this.color = props['color'] ?? 'var(--blue)';
-        this.timeout = props['timeout'] ?? 3000;
         this.text = text;
+        this.props = props ?? {};
+
+        props.color = props.color ?? 'var(--blue)';
+        props.timeout = props.timeout ?? 3000;
 
         this._show();
     }
@@ -21,17 +22,17 @@ export class Toast {
         new Toast(message, { color: 'var(--green)' });
     }
 
-    _build() {
-        let toast = document.createElement('div');
-        toast.style.background = this.color;
-        toast.classList.add('toast', 'show');
-        toast.innerText = this.text;
-        return toast;
-    }
-
     _show() {
-        toast = this._build();
+        let toast = this._build();
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), this.timeout);
+        setTimeout(() => toast.remove(), this.props.timeout);
+    }
+    
+    _build() {
+        let tag = document.createElement('div');
+        tag.style.background = this.props.color;
+        tag.classList.add('toast', 'show');
+        tag.innerText = this.text;
+        return tag;
     }
 }
