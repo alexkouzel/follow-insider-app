@@ -4,22 +4,22 @@
 
 :root {
     /* blue colors */
-    --faint-blue: #7d87a2;
     --dark-blue: #0A142F;
-    --light-blue: #3DA8AE;
-    --blue: #314069;
+    --blue: #384b80;
+    --cyan: #3DA8AE;
 
-    /* grey colors */
+    /* black/white colors */
+    --black: #000;
     --dark-grey: #444;
-    --light-grey: #C9C9C9;
-    --grey: #999;
+    --grey: #AAA;
+    --light-grey: #CCC;
     --faint: #EEE;
+    --white: #FFF;
 
-    /* status colors */
-    --green: #808000;
+    /* other colors */
+    --green: #4F8D15;
     --yellow: #EBD82C;
-    --orange: #b66141;
-    --red: #c94e45;
+    --red: #F51A1A;
 
     /* chart colors */
     --c1: #34495E;
@@ -30,10 +30,10 @@
     --c6: #515A5A;
 
     /* borders */
-    --small-border: 0.1rem solid #ccc;
+    --small-border: .1rem solid var(--light-grey);
 
     /* shadows */
-    --shadow-0: 0 .1rem .4rem .1rem rgba(0, 0, 0, 0.10);
+    /* --shadow-0: 0 .1rem .4rem .1rem rgba(0, 0, 0, 0.10); */
     --shadow-1: 0 .2rem .4rem .2rem rgba(0, 0, 0, 0.15);
 
     /* header */

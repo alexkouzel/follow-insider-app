@@ -1,0 +1,19 @@
+@import "/styles/root.css";
+@import "/styles/components/default.css";
+
+main {
+    display: flex;
+    margin: 18rem auto 0 auto;
+    align-items: center;
+    gap: 4rem;
+}
+
+#error-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+#error-image {
+    height: 40rem;
+}

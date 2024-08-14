@@ -19,16 +19,18 @@ export function getJson(url) {
     return getData(url, 'application/json', data => data.json());
 }
 
-export function getEntity(url, convert) {
-    return convert(getJson(url));
+export async function getEntity(url, convert) {
+    const json = await getJson(url);
+    return convert(json);
 }
 
-export function getEntities(url, convert) {
-    return getJson(url).map(obj => convert(obj));
+export async function getModels(url, convert) {
+    const json = await getJson(url);
+    return json.map(obj => convert(obj));
 }
 
-async function postData(url, contentType, body) {
-    return await request(url, {
+function postData(url, contentType, body) {
+    return request(url, {
         method: 'POST',
         headers: { 'Content-Type': contentType },
         body: body,
@@ -47,12 +49,12 @@ async function getData(url, accept, convert) {
 }
 
 async function request(url, props) {
-    console.log(props.method + ' ' + props.url);
+    console.log(props.method + ' ' + url);
 
-    // Ensure redirects are followed automatically
+    // ensure redirects are followed automatically
     props['redirect'] = 'follow';
 
-    const response = await fetch(location.origin + url, props);
+    const response = await fetch(url, props);
     return handleResponse(response);
 }
 

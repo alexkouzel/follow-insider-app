@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/pages/index/index.css">
+    <script type="module" src="/pages/index/index.js"></script>
+    <title>Welcome | Follow Insider</title>
+</head>
+
+<body>
+
+    <header>
+        <h3 onclick="location.assign('/')">
+            <span style="color: var(--white)">Follow</span>
+            <span style="color: var(--cyan)">Insider</span>
+        </h3>
+        <ul>
+            <li>Contact</li>
+            <li>FAQ</li>
+        </ul>
+    </header>
+
+    <main>
+        <h1>Follow <span style="color: var(--cyan)">Insider</span></h1>
+        <div style="height: 3rem;"></div>
+
+        <div id="main-search">
+            <div class="search">
+                <label for="search-input"></label>
+                <input id="search-input" type="text" placeholder="Search a company by name, ticker, or CIK">
+                <img class="abs-ctr" src="/assets/icons/search.svg" alt="Search Icon">
+            </div>
+            <p id="view-all" class="link" onclick="location.assign('/companies')">view all</p>
+        </div>
+        <div>
+            <div id="suggestions">
+                <p onclick="location.assign('/companies/789019')">Microsoft</p>
+                <p onclick="location.assign('/companies/1318605')">Tesla</p>
+                <p onclick="location.assign('/companies/21344')">Coca Cola</p>
+                <p onclick="location.assign('/companies/320193')">Apple</p>
+                <p onclick="location.assign('/companies/1341439')">Oracle</p>
+                <p onclick="location.assign('/companies/858877')">Cisco</p>
+                <p onclick="location.assign('/companies/796343')">Adobe</p>
+                <p onclick="location.assign('/companies/50863')">Intel</p>
+                <p onclick="location.assign('/companies/1065280')">Netflix</p>
+                <p onclick="location.assign('/companies/1018724')">Amazon</p>
+                <p onclick="location.assign('/companies/1329099')">Baidu</p>
+                <p onclick="location.assign('/companies/1571996')">Dell</p>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>

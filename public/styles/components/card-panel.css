@@ -14,7 +14,7 @@
 .card {
     position: relative;
     height: min-content;
-    box-shadow: var(--shadow-0);
+    box-shadow: var(--shadow-1);
     border-radius: 1.5rem;
     min-width: 30rem;
     padding: 3rem;

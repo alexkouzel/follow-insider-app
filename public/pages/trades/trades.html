@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/pages/trades/trades.css">
+    <script type="module" src="/pages/trades/trades.js"></script>
+    <title>Trades | Follow Insider</title>
+</head>
+
+<body>
+    
+    <header>
+        <h3 onclick="location.assign('/')">
+            <span style="color: var(--white)">Follow</span>
+            <span style="color: var(--cyan)">Insider</span>
+        </h3>
+        <ul>
+            <li>Contact</li>
+            <li>FAQ</li>
+        </ul>
+    </header>
+
+    <div style="height: 6rem"></div>
+
+    <main>
+        <div id="table-inputs">
+
+            <!-- search bar -->
+            <div class="search">
+                <label for="search-input"></label>
+                <input id="search-input" type="text" placeholder="Search a company by name, ticker, or CIK">
+                <img class="abs-ctr" src="/assets/icons/search.svg" alt="Search Icon">
+            </div>
+
+            <!-- filters -->
+            <div id="filters">
+                <div id="filter-transaction" class="dropdown">
+                    <p>Transaction</p>
+                    <div style="height: 0.5rem"></div>
+                    <button class="dropbtn">All</button>
+                    <div class="dropdown-content">
+                        <p>All</p>
+                        <p>Buy</p>
+                        <p>Sell</p>
+                    </div>
+                </div>
+                <div id="filter-executed-at" class="dropdown">
+                    <p>Executed At</p>
+                    <div style="height: 0.5rem"></div>
+                    <button class="dropbtn">All</button>
+                    <div class="dropdown-content">
+                        <p>All</p>
+                        <p>Today</p>
+                        <p>Last 7 Days</p>
+                        <p>Last 31 Days</p>
+                    </div>
+                </div>
+                <div id="filter-insider" class="dropdown dropdown-blocked">
+                    <p>Insider</p>
+                    <div style="height: 0.5rem"></div>
+                    <button class="dropbtn">All</button>
+                    <div class="dropdown-content"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="height: 2rem"></div>
+        
+        <div id="trade-table"></div>
+    </main>
+
+</body>
+
+</html>

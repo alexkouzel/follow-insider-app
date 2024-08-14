@@ -13,18 +13,15 @@ html {
 body {
     display: flex;
     flex-direction: column;
-    position: relative;
-    align-items: center;
-    overflow-x: hidden;
-    background: white;
     min-height: 100vh;
-    width: 100%;
-}
-
-li {
-    cursor: pointer;
 }
 
 ul {
     list-style: none;
+}
+
+@media screen and (max-width: 35rem) {
+    html {
+        font-size: 50%;
+    }
 }

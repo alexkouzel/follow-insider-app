@@ -1,37 +1,56 @@
-import { Table, Row, Cell } from '/scripts/visuals/components/table.js';
+import { Table, Row, Cell } from '/scripts/visuals/table/table.js';
 import { Forms } from '/scripts/client/endpoints.js';
+import * as string from '/scripts/utils/string.js';
 
-export function initTradeTable(container) {
-    let columns = ['Insider', 'Title', 'Type', 'Price', 'Shares', 'Value', 'Date'];
-    let align = ['start', 'start', 'center', 'end', 'end', 'end', 'center']
+export async function initTradeTable(container) {
+    let columns = ['Company', 'Insider', 'Relationship', 'Type', '# Shares', 'Price', 'Value', '# Shares Left', 'Executed At', 'URL'];
+    let align = ['start', 'start', 'start', 'center', 'end', 'end', 'end', 'end', 'end', 'center']
 
-    let table = new Table(columns, {
+    let props = {
         align: align,
-        scrollThreshold: 0.8,
-        onScrollAdd: (idx) => formsToRows(Forms.getPage(idx)),
-        initialData: formsToRows(Forms.getPage(0))
-    });
+        loadPage: _getPage,
+    };
 
+    let table = new Table(columns, props);
     container.appendChild(table.tag);
 }
 
-function formsToRows(forms) {
-    return forms.map(form => formToRows(form)).flat(1);
+async function _getPage(idx) {
+    let forms = await Forms.getPage(idx);
+    return _formsToRows(forms);
 }
 
-function formToRows(form) {
-    let insider = new Cell(form.insider.name);
-    let title = new Cell(form.insiderTitles.join(', '));
+function _formsToRows(forms) {
+    return forms.map(form => _formToRows(form)).flat(1);
+}
 
-    return form.trades.map(trade => {
-        let typeColor = trade.type == 'BUY' ? 'var(--green)' : 'var(--red)';
-
-        let type = new Cell(trade.type, { color: typeColor });
-        let price = new Cell(trade.sharePrice);
-        let shares = new Cell(trade.shareCount);
-        let totalValue = new Cell(trade.sharePrice ? trade.sharePrice * trade.shareCount : 'NAN');
-        let date = new Cell(trade.executedAt);
-
-        return new Row([insider, title, type, price, shares, totalValue, date]);
+function _formToRows(form) {
+    let company = new Cell(form.company.name, {
+        // onclick: () => window.open('/company/' + form.company.cik)
     });
+
+    let insider = new Cell(form.insider.name);
+    let relationship = new Cell(form.insiderTitles.join(', '));
+    
+    let url = new Cell('', { 
+        color: 'var(--blue)',
+        icon: '/assets/icons/link.png', 
+        iconSize: '2rem',
+        onclick: () => window.open(form.xmlUrl)
+    });
+
+    return form.trades.map(trade => new Row([company, insider, relationship, ..._getTradeCells(trade), url]));
+}
+
+function _getTradeCells(trade) {
+    let typeColor = trade.type == 'BUY' ? 'var(--green)' : 'var(--red)';
+
+    let type = new Cell(trade.type, { color: typeColor });
+    let shareCount = new Cell(trade.shareCount);
+    let price = new Cell(string.formatMoney(trade.sharePrice, '$'));
+    let value = new Cell(trade.sharePrice ? string.formatMoney(trade.sharePrice * trade.shareCount, '$') : 'NAN');
+    let sharesLeft = new Cell(trade.sharesLeft);
+    let executedAt = new Cell(string.formatDate(trade.executedAt));
+
+    return [type, price, shareCount, value, sharesLeft, executedAt];
 }

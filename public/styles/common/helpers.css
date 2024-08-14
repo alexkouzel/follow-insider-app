@@ -1,30 +1,5 @@
-.row {
-    display: flex;
-}
-
-.col {
-    display: flex;
-    flex-direction: column;
-}
-
-.left {
-    margin-right: auto;
-    text-align: left;
-}
-
-.right {
-    margin-left: auto;
-    text-align: right;
-    align-items: end;
-}
-
 .abs-ctr {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     position: absolute;
-    height: fit-content;
-    width: fit-content;
     margin: auto;
     bottom: 0;
     right: 0;
@@ -33,13 +8,21 @@
 }
 
 .divider {
-    background-color: #bbb;
-    width: 100%;
+    background-color: var(--grey);
     height: .1rem;
+    width: 100%;
 }
 
-@media screen and (max-width: 30rem) {
-    .no-mobile {
-        display: none;
-    }
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version */
+}
+
+.link {
+    cursor: pointer;
+    text-decoration: underline;
+    color: var(--cyan);
 }
