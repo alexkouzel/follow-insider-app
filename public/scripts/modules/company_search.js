@@ -1,6 +1,6 @@
 import { SearchBar } from '/scripts/visuals/search.js';
 
-export function initCompanySearch(tag) {
+export function initCompanySearch(tag, onSearch) {
     let loadHints = async (text) => {
         return {
             'Apple Inc. (AAPL)': '320193',
@@ -12,10 +12,6 @@ export function initCompanySearch(tag) {
             'UNIVERSAL BIOSENSORS INC (UBI)': '1279695',
             'View, Inc. (VIEW)': '1811856'
         };
-    };
-
-    let onSearch = (isHint, value) => {
-        console.log(isHint + ' ' + value);
     };
 
     return new SearchBar(tag, loadHints, onSearch);

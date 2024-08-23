@@ -45,7 +45,7 @@ export class SearchBar {
                     if (searchBar.focus > -1 && hints) {
                         hints[searchBar.focus].click();
                     } else {
-                        searchBar.onSearch(false, inputTag.value);
+                        searchBar.onSearch(inputTag.value, null);
                     }
             }
         });
@@ -101,8 +101,7 @@ export class SearchBar {
                 hint.innerText = val;
             }
             hint.onclick = () => {
-                let chosenHint = hints[val]
-                this.onSearch(chosenHint !== null, chosenHint ?? val);
+                this.onSearch(val, hints[val]);
             };
             container.appendChild(hint);
         }

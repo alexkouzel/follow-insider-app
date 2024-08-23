@@ -4,8 +4,8 @@
     padding: 1.2rem 2rem;
     border-radius: 1rem;
     cursor: pointer;
-    width: 14rem;
     text-align: start;
+    width: 14rem;
 }
 
 .dropbtn::after {
@@ -49,4 +49,3 @@
 .dropdown-blocked button {
     color: var(--grey)
 }
- 

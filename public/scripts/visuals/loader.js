@@ -5,10 +5,10 @@ export class Loader {
     }
 
     _build() {
-        let tag = document.createElement('div');
-        tag.classList.add('abs-ctr');
-        tag.innerHTML = '<div class="lds-facebook"><div></div><div></div><div></div></div>';
-        return tag;
+        let loader = document.createElement('div');
+        loader.classList.add('lds-facebook', 'abs-ctr');
+        loader.innerHTML = '<div></div><div></div><div></div>';
+        return loader;
     }
 
     isVisible() {

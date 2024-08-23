@@ -8,14 +8,28 @@ main {
     padding: 4rem 6rem;
 }
 
-#table-inputs {
+#filters {
     display: flex;
     flex-direction: column;
     max-width: max-content;
+    gap: 3rem;
+}
+
+#filters-line-2 {
+    display: flex;
     gap: 2rem;
 }
 
-#filters {
-    display: flex;
-    gap: 2rem
+@media screen and (max-width: 35rem) {
+    .dropbtn { 
+        width: 100%;
+    }
+
+    .dropdown {
+        width: 100%;
+    }
+
+    #filters {
+        max-width: none;
+    }
 }

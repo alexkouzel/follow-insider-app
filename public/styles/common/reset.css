@@ -16,12 +16,11 @@ body {
     min-height: 100vh;
 }
 
-ul {
-    list-style: none;
+button {
+    background: none;
+    cursor: pointer;
 }
 
-@media screen and (max-width: 35rem) {
-    html {
-        font-size: 50%;
-    }
+ul {
+    list-style: none;
 }
