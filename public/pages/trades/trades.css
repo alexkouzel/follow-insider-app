@@ -3,6 +3,7 @@
 @import "/styles/components/search.css";
 @import "/styles/components/table.css";
 @import "/styles/components/dropdown.css";
+@import "/styles/components/toast.css";
 
 main {
     padding: 4rem 6rem;
@@ -15,12 +16,12 @@ main {
     gap: 3rem;
 }
 
-#filters-line-2 {
+#filters-2 {
     display: flex;
     gap: 2rem;
 }
 
-@media screen and (max-width: 35rem) {
+@media screen and (max-width: 40rem) {
     .dropbtn { 
         width: 100%;
     }

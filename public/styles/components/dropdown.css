@@ -1,11 +1,12 @@
 .dropbtn {
+    position: relative;
     background-color: var(--white);
     border: var(--small-border);
     padding: 1.2rem 2rem;
     border-radius: 1rem;
     cursor: pointer;
     text-align: start;
-    width: 14rem;
+    width: 15rem;
 }
 
 .dropbtn::after {
@@ -16,7 +17,7 @@
     width: 1rem;
     height: 1rem;
     position: absolute;
-    transform: translateY(0.3rem);
+    transform: translateY(50%);
     right: 1.5rem;
 }
 

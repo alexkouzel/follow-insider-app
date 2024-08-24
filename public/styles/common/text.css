@@ -39,7 +39,7 @@ th {
     font-weight: 500;
 }
 
-@media screen and (max-width: 35rem) {
+@media screen and (max-width: 40rem) {
     html {
         font-size: 40%;
     }

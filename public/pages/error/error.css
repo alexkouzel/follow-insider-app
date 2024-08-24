@@ -17,3 +17,15 @@ main {
 #error-image {
     height: 40rem;
 }
+
+@media screen and (max-width: 60rem) {
+    main { 
+        margin: 10rem auto 0 auto;
+        flex-direction: column;
+        gap: 0;
+    }
+
+    #error-text {
+        text-align: center;
+    }
+}

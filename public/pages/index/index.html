@@ -18,10 +18,6 @@
             <span style="color: var(--white)">Follow</span>
             <span style="color: var(--cyan)">Insider</span>
         </h3>
-        <ul>
-            <li>Contact</li>
-            <li>FAQ</li>
-        </ul>
     </header>
 
     <main>
@@ -34,22 +30,22 @@
                 <input id="search-input" type="text" placeholder="Search a company by name, ticker, or CIK">
                 <img class="abs-ctr" src="/assets/icons/search.svg" alt="Search Icon">
             </div>
-            <p id="view-all" class="link" onclick="location.assign('/companies')">view all</p>
+            <p id="view-all" class="link" onclick="location.assign('/trades')">view all</p>
         </div>
         <div>
             <div id="suggestions">
-                <p onclick="location.assign('/companies/789019')">Microsoft</p>
-                <p onclick="location.assign('/companies/1318605')">Tesla</p>
-                <p onclick="location.assign('/companies/21344')">Coca Cola</p>
-                <p onclick="location.assign('/companies/320193')">Apple</p>
-                <p onclick="location.assign('/companies/1341439')">Oracle</p>
-                <p onclick="location.assign('/companies/858877')">Cisco</p>
-                <p onclick="location.assign('/companies/796343')">Adobe</p>
-                <p onclick="location.assign('/companies/50863')">Intel</p>
-                <p onclick="location.assign('/companies/1065280')">Netflix</p>
-                <p onclick="location.assign('/companies/1018724')">Amazon</p>
-                <p onclick="location.assign('/companies/1329099')">Baidu</p>
-                <p onclick="location.assign('/companies/1571996')">Dell</p>
+                <p onclick="location.assign('/trades?company-cik=789019')">Microsoft</p>
+                <p onclick="location.assign('/trades?company-cik=1318605')">Tesla</p>
+                <p onclick="location.assign('/trades?company-cik=21344')">Coca Cola</p>
+                <p onclick="location.assign('/trades?company-cik=320193')">Apple</p>
+                <p onclick="location.assign('/trades?company-cik=1341439')">Oracle</p>
+                <p onclick="location.assign('/trades?company-cik=858877')">Cisco</p>
+                <p onclick="location.assign('/trades?company-cik=796343')">Adobe</p>
+                <p onclick="location.assign('/trades?company-cik=50863')">Intel</p>
+                <p onclick="location.assign('/trades?company-cik=1065280')">Netflix</p>
+                <p onclick="location.assign('/trades?company-cik=1018724')">Amazon</p>
+                <p onclick="location.assign('/trades?company-cik=1329099')">Baidu</p>
+                <p onclick="location.assign('/trades?company-cik=1571996')">Dell</p>
             </div>
         </div>
     </main>

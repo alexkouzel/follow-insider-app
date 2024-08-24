@@ -1,14 +1,17 @@
-export function initDropdown(id, label, defaultValue, values, onclick) {
-    let tag = document.getElementById(id);
+export function initDropdown(container, label, defaultKey, entries, onChange) {
+    let tag = document.createElement('div');
 
+    tag.className = 'dropdown';
     tag.innerHTML = `
         <p>${label}</p>
         <div style="height: 0.5rem"></div>
-        <button class="dropbtn">${defaultValue}</button>
+        <button class="dropbtn">${entries[defaultKey]}</button>
         <div class="dropdown-content"></div>
     `;
 
-    if (values.length === 0) return;
+    container.appendChild(tag);
+
+    if (entries.length === 0) return;
 
     let button = tag.querySelector('.dropbtn');
     let content = tag.querySelector('.dropdown-content');
@@ -26,14 +29,16 @@ export function initDropdown(id, label, defaultValue, values, onclick) {
         }
     })
 
-    values.forEach((value) => {
+    Object.keys(entries).forEach((key) => {
+        let value = entries[key];
+
         let item = document.createElement('p');
         item.innerText = value;
         item.onclick = (event) => {
             event.stopPropagation();
-            button.innerText = item.innerText;
+            button.innerText = value;
             content.style.display = 'none';
-            onclick(item.innerText);
+            onChange(value, key);
         };
         content.appendChild(item);
     });

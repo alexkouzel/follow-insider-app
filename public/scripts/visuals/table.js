@@ -1,6 +1,6 @@
 import { Loader } from '/scripts/visuals/loader.js';
 
-/* props: align */
+/* props: align, pageSize, rangeSize, loadCount, loadPage */
 export class Table {
     constructor(columns, props) {
         this.columns = columns;
@@ -27,7 +27,7 @@ export class Table {
         props.loadCount().then(rowCount => {
 
             if (rowCount == 0) {
-                this.onEmpty();
+                this._onEmpty();
                 return;
             }
 
@@ -36,16 +36,13 @@ export class Table {
             this.pageCount = Math.ceil(this.rowCount / props.pageSize);
             this.rangeCount = Math.ceil(this.pageCount / props.rangeSize);
 
-            // add navigation
-            this.tag.appendChild(this._buildNav());
-
             // load first page
             this._loadPage();
         });
     }
 
     _loadPage() {
-        this.clear();
+        this._clear();
 
         this.counter++;
         let idx = this.counter;
@@ -62,7 +59,7 @@ export class Table {
             })
             .catch((idx) => {
                 if (idx !== this.counter) return;
-                this.onError();
+                this._onError();
             });
 
         let leftRowCount = this.rowCount - this.currPage * this.props.pageSize
@@ -72,7 +69,8 @@ export class Table {
     }
 
     _updateNav() {
-        this.tag.replaceChild(this._buildNav(), this.tag.querySelector('.table-nav'));
+        let nav = this.tag.querySelector('.table-nav');
+        this.tag.replaceChild(this._buildNav(), nav);
     }
 
     _addRows(rows) {
@@ -85,7 +83,7 @@ export class Table {
         });
     }
 
-    onEmpty() {
+    _onEmpty() {
         this.loader.hide();
         this.wrapperTag.innerHTML += `
             <div class='abs-ctr empty-state'>
@@ -96,7 +94,7 @@ export class Table {
         `;
     }
 
-    onError() {
+    _onError() {
         this.loader.hide();
         this.wrapperTag.innerHTML += `
             <div class='abs-ctr empty-state'>
@@ -107,7 +105,7 @@ export class Table {
         `;
     }
 
-    clear() {
+    _clear() {
         this.tag.querySelector('.empty-state')?.remove();
         this.tag.querySelector('tbody').innerHTML = '';
         this.loader.show();
@@ -117,6 +115,11 @@ export class Table {
         let table = document.createElement('div');
         table.classList.add('table');
         table.appendChild(this._buildWrapper());
+        
+        let nav = document.createElement('div');
+        nav.classList.add('table-nav');
+        table.appendChild(nav);
+
         return table;
     }
 
@@ -213,7 +216,7 @@ export class Table {
 
     _buildFirstPageButton() {
         let btn = document.createElement('button');
-        btn.innerHTML = `<img src='/assets/icons/nav/first.svg' alt='first page'/>`;
+        btn.innerHTML = `<img src='/assets/icons/nav-first.svg' alt='first page'/>`;
         btn.onclick = () => {
             this.currRange = 0;
             this.currPage = 0;
@@ -246,7 +249,7 @@ export class Table {
 
     _buildLastPageButton() {
         let btn = document.createElement('button');
-        btn.innerHTML = `<img src='/assets/icons/nav/last.svg' alt='last page'/>`;
+        btn.innerHTML = `<img src='/assets/icons/nav-last.svg' alt='last page'/>`;
         btn.onclick = () => {
             this.currRange = this.rangeCount - 1;
             this.currPage = this.pageCount - 1;
@@ -278,7 +281,7 @@ export class Row {
     }
 }
 
-/* props: onclick, color, max_width, min_width, class */
+/* props: onclick, color, max_width, min_width, class, icon, iconSize */
 export class Cell {
     constructor(value, props) {
         this.value = value;

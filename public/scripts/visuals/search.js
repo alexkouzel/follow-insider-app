@@ -22,8 +22,12 @@ export class SearchBar {
         inputTag.addEventListener('input', function () {
             clearTimeout(debounceTimeout);
             debounceTimeout = setTimeout(async () => {
-                let hints = await loadHints(this.value);
-                searchBar._updateHints(hints, this.value);
+                if (this.value === '') {
+                    searchBar._resetHints();
+                } else {
+                    let hints = await loadHints(this.value);
+                    searchBar._updateHints(hints, this.value);
+                }
             }, 300);
         });
 

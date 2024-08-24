@@ -45,7 +45,7 @@ main {
     color: var(--blue);
 }
 
-@media screen and (max-width: 35rem) {
+@media screen and (max-width: 40rem) {
     main {
         margin-top: 15rem;
     }

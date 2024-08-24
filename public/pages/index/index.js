@@ -1,9 +1,16 @@
 import { initCompanySearch } from '/scripts/modules/company_search.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // init company search
+
+    // company search
     let searchTag = document.querySelector('.search');
-    initCompanySearch(searchTag);
+
+    initCompanySearch(searchTag, (value, hint) => {
+        if (hint) {
+            window.location.assign(`/trades?company-name=${value}&company-cik=${hint}`);
+        } else {
+            window.location.assign(`/trades?company-name=${value}`);
+        }
+    });
 
 });

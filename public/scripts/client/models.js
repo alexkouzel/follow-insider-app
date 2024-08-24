@@ -14,52 +14,33 @@ export class Company {
     }
 }
 
-export class FormTrade {
-    constructor({ securityTitle, shareCount, sharePrice, executedAt, sharesLeft, valueLeft, type }) {
-        this.securityTitle = securityTitle;
-        this.shareCount = shareCount;
-        this.sharePrice = sharePrice;
-        this.executedAt = new Date(executedAt);
-        this.sharesLeft = sharesLeft;
-        this.valueLeft = valueLeft;
-        this.type = type;
-    }
-}
-
-export class Trade {
-    constructor({ company, insider, insiderTitles, type, shareCount, sharePrice, sharesLeft, valueLeft, executedAt, xmlUrl }) {
-        this.company = company;
-        this.insider = insider;
-        this.insiderTitles = insiderTitles;
-        this.type = type;
-        this.shareCount = shareCount;
-        this.sharePrice = sharePrice;
-        this.sharesLeft = sharesLeft;
-        this.valueLeft = valueLeft;
-        this.executedAt = new Date(executedAt);
-        this.xmlUrl = xmlUrl;
-    }
-}
-
 export class Form {
-    constructor({ accNo, trades, company, insider, insiderTitles, filedAt, xmlUrl }) {
+    constructor({ accNo, company, insider, insiderTitles, filedAt, xmlUrl, trades }) {
         this.accNo = accNo;
-        this.trades = trades.map(trade => new FormTrade(trade));
         this.company = new Company(company);
         this.insider = new Insider(insider);
         this.insiderTitles = insiderTitles;
         this.filedAt = filedAt;
         this.xmlUrl = xmlUrl;
+
+        if (trades) {
+            this.trades = trades.map(trade => new Trade(trade));
+        }
     }
 }
 
-export class Log {
-    constructor({ timestamp, threadName, logLevel, loggerName, message, stackTrace }) {
-        this.timestamp = timestamp;
-        this.threadName = threadName;
-        this.logLevel = logLevel;
-        this.loggerName = loggerName;
-        this.message = message;
-        this.stackTrace = stackTrace;
+export class Trade {
+    constructor({ securityTitle, shareCount, sharePrice, sharesLeft, valueLeft, executedAt, type, form }) {
+        this.securityTitle = securityTitle;
+        this.shareCount = shareCount;
+        this.sharePrice = sharePrice;
+        this.sharesLeft = sharesLeft;
+        this.valueLeft = valueLeft;
+        this.executedAt = new Date(executedAt);
+        this.type = type;
+
+        if (form) {
+            this.form = new Form(form);
+        }
     }
 }
