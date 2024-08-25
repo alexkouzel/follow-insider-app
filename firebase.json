@@ -5,6 +5,20 @@
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/pages/index/index.html"
+      },
+      {
+        "source": "/trades",
+        "destination": "/pages/trades/trades.html"
+      },
+      {
+        "source": "**",
+        "destination": "/pages/error/error.html"
+      }
     ]
   }
 }
