@@ -3,7 +3,6 @@
 @import "/styles/components/search.css";
 @import "/styles/components/table.css";
 @import "/styles/components/dropdown.css";
-@import "/styles/components/toast.css";
 
 main {
     padding: 4rem 6rem;

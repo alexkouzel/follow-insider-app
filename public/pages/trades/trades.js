@@ -35,26 +35,26 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let params = {
-        'company-name': urlParams.get('company-name') || '',
-        'company-cik': urlParams.get('company-cik') || '',
-        'executed-at': getValidatedParam('executed-at', Object.keys(DATES)),
-        'filed-at': getValidatedParam('filed-at', Object.keys(DATES)),
+        'companyName': urlParams.get('companyName') || '',
+        'companyCik': urlParams.get('companyCik') || '',
+        'executedAt': getValidatedParam('executedAt', Object.keys(DATES)),
+        'filedAt': getValidatedParam('filedAt', Object.keys(DATES)),
         'type': getValidatedParam('type', Object.keys(TYPES))
     }
 
     // --- table ---
     let main = document.querySelector('main');
-    let table = initTradeTable(main, params);
+    let table = initTradeTable(main, paramsToFilters(params));
 
     // --- filters 1 ---
     let filters1 = document.getElementById('filters-1');
     let input = filters1.querySelector('input');
 
-    input.value = params['company-name'];
+    input.value = params['companyName'];
 
     initCompanySearch(filters1, (value, hint) => {
-        params['company-name'] = value;
-        params['company-cik'] = hint || '';
+        params['companyName'] = value;
+        params['companyCik'] = hint || '';
 
         input.value = value;
         table = updateTable(main, table, params);
@@ -68,13 +68,13 @@ document.addEventListener('DOMContentLoaded', () => {
         table = updateTable(main, table, params);
     });
 
-    initDropdown(filters2, 'Executed at', params['executed-at'], DATES, (_, value) => {
+    initDropdown(filters2, 'Executed at', params['executedAt'], DATES, (_, value) => {
         params['executedAt'] = value;
         table = updateTable(main, table, params);
     });
 
-    initDropdown(filters2, 'Filed at', params['filed-at'], DATES, (_, value) => {
-        params['filtedAt'] = value;
+    initDropdown(filters2, 'Filed at', params['filedAt'], DATES, (_, value) => {
+        params['filedAt'] = value;
         table = updateTable(main, table, params);
     });
 
@@ -82,5 +82,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function updateTable(main, table, params) {
     table.tag.remove();
-    return initTradeTable(main, params);
+    let filters = paramsToFilters(params);
+    return initTradeTable(main, filters);
+}
+
+function convertDate(date) {
+    if (!date) return null;
+
+    let day = 24 * 60 * 60 * 1000;
+
+    let types = {
+        'D': day,
+        'W': day * 7,
+        'M': day * 30,
+        'Y': day * 365
+    }
+
+    let now = new Date();
+    let number = parseInt(date.substring(1));
+
+    return new Date(now - number * types[date.charAt(0)]);
+}
+
+function paramsToFilters(params) {
+    let filters = Object.assign({}, params);
+    
+    filters['companyName'] = params['companyName'] ? params['companyName'] : null;
+    filters['companyCik'] = params['companyCik'] ? parseInt(params['companyCik']) : null;
+    filters['executedAt'] = convertDate(params['executedAt']);
+    filters['filedAt'] = convertDate(params['filedAt']);
+    filters['type'] = params['type'] ? params['type'] : null;
+    
+    return filters;
 }

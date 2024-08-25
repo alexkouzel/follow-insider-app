@@ -2,14 +2,17 @@ import { Table, Row, Cell } from '/scripts/visuals/table.js';
 import { Trades } from '/scripts/client/endpoints.js';
 import * as string from '/scripts/utils/string.js';
 
-export function initTradeTable(container, params) {
+export function initTradeTable(container, filters) {
     let columns = ['Company', 'Insider', 'Relationship', 'Type', '# Shares', 'Price', 'Value', 'Value Left', 'Executed At', 'URL'];
     let align = ['start', 'start', 'start', 'center', 'end', 'end', 'end', 'end', 'end', 'center']
 
+    let pageSize = 10;
+
     let props = {
         align: align,
-        loadPage: (idx) => _loadPage(idx, params),
-        loadCount: () => _loadCount(params)
+        loadPage: (idx) => _loadPage(idx, pageSize, filters),
+        loadCount: () => _loadCount(filters),
+        pageSize: pageSize,
     };
 
     let table = new Table(columns, props);
@@ -18,12 +21,12 @@ export function initTradeTable(container, params) {
     return table;
 }
 
-async function _loadCount(params) {
-    return await Trades.count(params);
+async function _loadCount(filters) {
+    return await Trades.count(filters);
 }
 
-async function _loadPage(idx, params) {
-    let trades = await Trades.page(idx, 10, params);
+async function _loadPage(idx, pageSize, filters) {
+    let trades = await Trades.page(idx, pageSize, filters);
     return _tradesToRows(trades);
 }
 
@@ -35,7 +38,7 @@ function _tradeToRow(trade) {
     let form = trade.form;
     
     // company cell
-    let company = form.company.name;
+    let company = `${form.company.name} (${form.company.ticker})`;
     let companyCell = new Cell(company, {
         // onclick: () => window.open('/company/' + form.company.cik)
     });

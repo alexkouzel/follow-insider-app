@@ -8,7 +8,7 @@ export function formatNumber(value) {
     if (value >= 1.0e+9) return (value / 1.0e+9).toFixed(2) + 'B';
     if (value >= 1.0e+6) return (value / 1.0e+6).toFixed(2) + 'M';
     if (value >= 1.0e+3) return (value / 1.0e+3).toFixed(2) + 'K';
-    return value.toFixed(0);
+    return value.toFixed(2);
 }
 
 export function formatDate(value, options) {
@@ -17,5 +17,5 @@ export function formatDate(value, options) {
 }
 
 export function formatMoney(value, currency) {
-    return currency + value.toFixed(2);
+    return currency + formatNumber(value);
 }

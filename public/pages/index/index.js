@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initCompanySearch(searchTag, (value, hint) => {
         if (hint) {
-            window.location.assign(`/trades?company-name=${value}&company-cik=${hint}`);
+            window.location.assign(`/trades?companyName=${value}&companyCik=${hint}`);
         } else {
-            window.location.assign(`/trades?company-name=${value}`);
+            window.location.assign(`/trades?companyName=${value}`);
         }
     });
 

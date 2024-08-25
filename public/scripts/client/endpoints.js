@@ -46,7 +46,7 @@ export class Insiders {
             return Mocker.insiders(limit);
         }
 
-        let url = `${serverUrl}/insiders/search?text=${text}&limit=${limit}`;
+        let url = `${serverUrl}/insiders/search?text=${encodeURIComponent(text)}&limit=${limit}`;
         return await http.getModels(url, json => new Insider(json));
     }
 }
@@ -92,7 +92,7 @@ export class Companies {
             return Mocker.companies(limit);
         }
 
-        let url = `${serverUrl}/companies/search?text=${text}&limit=${limit}`;
+        let url = `${serverUrl}/companies/search?text=${encodeURIComponent(text)}&limit=${limit}`;
         return await http.getModels(url, json => new Company(json));
     }
 }
@@ -117,43 +117,34 @@ export class Forms {
         }
 
         let url = `${serverUrl}/forms/count`;
-        return parseInt(await http.getText(url));
+        return await http.getData(url);
     }
 }
 
 export class Trades {
-    static async page(page = 0, pageSize = 10, params) {
+    static async page(page = 0, pageSize = 10, filters) {
 
         if (Config.debugMode) {
             await debugDelay();
             return Mocker.trades(pageSize, true);
         }
 
-        let url = `${serverUrl}/trades?page=${page}${formatParams(params)}`;
-        return await http.getModels(url, json => new Trade(json));
+        let url = `${serverUrl}/trades?page=${page}&pageSize=${pageSize}`;
+        return await http.getModels(url, json => new Trade(json), filters);
     }
 
-    static async count(params) {
+    static async count(filters) {
 
         if (Config.debugMode) {
             await debugDelay();
             return 1000;
         }
 
-        let url = `${serverUrl}/trades/count${formatParams(params)}`;
-        return parseInt(await http.getText(url));
+        let url = `${serverUrl}/trades/count`;
+        return await http.getData(url, filters);
     }
 }
 
 function debugDelay() {
     return new Promise(resolve => setTimeout(resolve, Config.debugDelay));
-}
-
-function formatParams(params) {
-    if (!params) return '';
-    return '?' + Object
-        .keys(params)
-        .map(key => key + '=' + params[key])
-        .filter(val => val)
-        .join('&');
 }
