@@ -2,6 +2,7 @@ export class SearchBar {
     constructor(tag, loadHints, onSearch) {
         this.tag = tag;
         this.onSearch = onSearch;
+        this.loadHints = loadHints;
 
         this.focus = -1;
         this.hintsNum = 0;
@@ -13,78 +14,85 @@ export class SearchBar {
         return this.tag.querySelectorAll('.hints>*');
     }
 
-    _handleHints(loadHints) {
-        let searchBar = this;
-        let inputTag = searchBar.tag.querySelector('input');
+    _handleHints() {
+        let inputTag = this.tag.querySelector('input');
 
         // update hints on search input
         let debounceTimeout;
-        inputTag.addEventListener('input', function () {
+        inputTag.addEventListener('input', () => {
             clearTimeout(debounceTimeout);
-            debounceTimeout = setTimeout(async () => {
-                if (this.value === '') {
-                    searchBar._resetHints();
-                } else {
-                    let hints = await loadHints(this.value);
-                    searchBar._updateHints(hints, this.value);
-                }
-            }, 300);
+
+            let handleHints = async () => {
+                inputTag.value !== ''
+                    ? await this._updateHints(inputTag.value)
+                    : this._resetHints();
+            };
+
+            debounceTimeout = setTimeout(handleHints, 300);
         });
 
         // handle hints' navigation & clicks
-        inputTag.addEventListener('keydown', function (e) {
+        inputTag.addEventListener('keydown', (e) => {
             switch (e.key) {
                 case 'Down':
                 case 'ArrowDown':
-                    searchBar.focus++;
-                    searchBar._updateActiveHint();
+                    this.focus++;
+                    this._updateActiveHint();
                     break;
                 case 'Up':
                 case 'ArrowUp':
-                    searchBar.focus--;
-                    searchBar._updateActiveHint();
+                    this.focus--;
+                    this._updateActiveHint();
                     break;
                 case 'Enter':
-                    let hints = searchBar._hintsTag;
-                    if (searchBar.focus > -1 && hints) {
-                        hints[searchBar.focus].click();
-                    } else {
-                        searchBar.onSearch(inputTag.value, null);
-                    }
+                    let hintsTag = this._hintsTag;
+                    
+                    if (hintsTag.length !== 0) 
+                        hintsTag[this.focus].click();
             }
         });
 
         // hide hints if clicked somewhere
         window.addEventListener('click', () => {
-            searchBar._resetHints();
+            this._resetHints();
         });
     }
 
     _updateActiveHint() {
-        let hintsNum = this.hintsNum;
-        if (hintsNum === 0) return false;
+        if (this.hintsNum === 0)
+            return false;
 
         // shift current focus
-        if (this.focus < 0) this.focus = (hintsNum - 1);
-        this.focus = this.focus % hintsNum;
+        if (this.focus < 0) {
+            this.focus = (this.hintsNum - 1);
+        }
+        this.focus = this.focus % this.hintsNum;
 
         // update an active hint
-        let hints = this._hintsTag;
-        for (let i = 0; i < hints.length; i++) {
-            if (i === this.focus) {
-                hints[i].classList.add('hints-active');
-            } else {
-                hints[i].classList.remove('hints-active');
-            }
+        let hintsTag = this._hintsTag;
+
+        if (hintsTag === null)
+            return;
+
+        for (let i = 0; i < hintsTag.length; i++) {
+            let hintTag = hintsTag[i];
+
+            i === this.focus
+                ? hintTag.classList.add('hints-active')
+                : hintTag.classList.remove('hints-active');
         }
     }
 
-    _updateHints(hints, input) {
+    async _updateHints(input) {
         this._resetHints();
 
+        let hintMap = await this.loadHints(input);
+
         // check if any matches found
-        this.hintsNum = Object.keys(hints).length;
+        this.hintsNum = Object.keys(hintMap).length;
         if (this.hintsNum === 0) return;
+
+        this.focus = 0;
 
         // create a list with hints
         let container = document.createElement('div');
@@ -93,27 +101,36 @@ export class SearchBar {
 
         // add matched hints to the list
         input = input.toLowerCase();
-        for (let val in hints) {
-            let hint = document.createElement('p');
-            let idx = val.toLowerCase().indexOf(input)
-            if (idx !== -1) {
-                let left = val.substring(0, idx);
-                let middle = val.substring(idx, input.length + idx);
-                let right = val.substring(input.length + idx, val.length);
-                hint.innerHTML = `${left}<b>${middle}</b>${right}`;
+
+        let i = 0;
+        for (const hint in hintMap) {
+            let hintTag = document.createElement('p');
+            let matchIdx = hint.toLowerCase().indexOf(input);
+            
+            if (matchIdx !== -1) {
+                let left = hint.substring(0, matchIdx);
+                let middle = hint.substring(matchIdx, input.length + matchIdx);
+                let right = hint.substring(input.length + matchIdx, hint.length);
+                hintTag.innerHTML = `${left}<b>${middle}</b>${right}`;
             } else {
-                hint.innerText = val;
+                hintTag.innerText = hint;
             }
-            hint.onclick = () => {
-                this.onSearch(val, hints[val]);
-            };
-            container.appendChild(hint);
+
+            if (i === 0) hintTag.classList.add('hints-active');
+
+            hintTag.onclick = () => this.onSearch(hint, hintMap[hint]);
+            container.appendChild(hintTag);
+
+            i++;
         }
     }
 
     _resetHints() {
-        let hints = this.tag.querySelector('.hints');
-        if (hints !== null) hints.remove();
+        let hintsTag = this.tag.querySelector('.hints');
+
+        if (hintsTag !== null)
+            hintsTag.remove();
+
         this.focus = -1;
     }
 }

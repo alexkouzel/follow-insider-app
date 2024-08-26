@@ -35,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     let params = {
-        'companyName': urlParams.get('companyName') || '',
         'companyCik': urlParams.get('companyCik') || '',
         'executedAt': getValidatedParam('executedAt', Object.keys(DATES)),
         'filedAt': getValidatedParam('filedAt', Object.keys(DATES)),
@@ -50,33 +49,31 @@ document.addEventListener('DOMContentLoaded', () => {
     let filters1 = document.getElementById('filters-1');
     let input = filters1.querySelector('input');
 
-    input.value = params['companyName'];
+    input.value = urlParams.get('companyName') || '';
 
-    initCompanySearch(filters1, (value, hint) => {
-        params['companyName'] = value;
-        params['companyCik'] = hint || '';
+    initCompanySearch(filters1, (name, cik) => {
+        if (cik === params['companyCik']) return;
 
-        input.value = value;
+        params['companyCik'] = cik;
+        input.value = name;
         table = updateTable(main, table, params);
     });
 
     // --- filters 2 ---
     let filters2 = document.getElementById('filters-2');
 
-    initDropdown(filters2, 'Transaction', params['type'], TYPES, (_, value) => {
-        params['type'] = value;
-        table = updateTable(main, table, params);
-    });
+    let addDropdown = (label, key, options) => {
+        initDropdown(filters2, label, params[key], options, (_, value) => {
+            if (value === params[key]) return;
 
-    initDropdown(filters2, 'Executed at', params['executedAt'], DATES, (_, value) => {
-        params['executedAt'] = value;
-        table = updateTable(main, table, params);
-    });
+            params[key] = value;
+            table = updateTable(main, table, params);
+        });
+    }
 
-    initDropdown(filters2, 'Filed at', params['filedAt'], DATES, (_, value) => {
-        params['filedAt'] = value;
-        table = updateTable(main, table, params);
-    });
+    addDropdown('Transaction', 'type', TYPES);
+    addDropdown('Executed at', 'executedAt', DATES);
+    addDropdown('Filed at', 'filedAt', DATES);
 
 });
 
@@ -107,7 +104,6 @@ function convertDate(date) {
 function paramsToFilters(params) {
     let filters = Object.assign({}, params);
     
-    filters['companyName'] = params['companyName'] ? params['companyName'] : null;
     filters['companyCik'] = params['companyCik'] ? parseInt(params['companyCik']) : null;
     filters['executedAt'] = convertDate(params['executedAt']);
     filters['filedAt'] = convertDate(params['filedAt']);
