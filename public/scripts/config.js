@@ -1,10 +1,10 @@
 export class Config {
 
     /* Production */
-    static serverUrl = 'follow-insider-eb-env.eba-hpznvsbn.eu-central-1.elasticbeanstalk.com ';
+    static serverUrl = 'https://follow-insider-api.com';
 
     /* Development */
-    static debugMode = location.hostname !== '127.0.0.1';
+    static debugMode = false;
     static debugDelay = 500;
 
 }
