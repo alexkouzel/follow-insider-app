@@ -3,7 +3,7 @@ import { Trades } from '/scripts/client/endpoints.js';
 import * as string from '/scripts/utils/string.js';
 
 export function initTradeTable(container, filters) {
-    let columns = ['Company', 'Insider', 'Relationship', 'Type', '# Shares', 'Price', 'Value', 'Value Left', 'Executed At', 'URL'];
+    let columns = ['Company', 'Insider', 'Relationship', 'Type', '# Shares', 'Price', 'Value', '# Shares Left', 'Executed At', 'URL'];
     let align = ['start', 'start', 'start', 'center', 'end', 'end', 'end', 'end', 'end', 'center']
 
     let pageSize = 10;
@@ -61,21 +61,19 @@ function _tradeToRow(trade) {
     let shareCountCell = new Cell(shareCount);
 
     // price cell
-    let price = string.formatMoney(trade.sharePrice, '$');
+    let price = trade.sharePrice ? string.formatMoney(trade.sharePrice, '$') : 'Unknown';
     let priceCell = new Cell(price);
 
     // value cell
-    let value = trade.sharePrice ? string.formatMoney(trade.sharePrice * trade.shareCount, '$') : 'NAN';
+    let value = trade.sharePrice ? string.formatMoney(trade.sharePrice * trade.shareCount, '$') : 'Unknown';
     let valueCell = new Cell(value);
 
-    // value left cell
-    trade.valueLeft ??= trade.sharesLeft * trade.shareCount;
-
-    let valueLeft = string.formatMoney(trade.valueLeft, '$');
-    let valueLeftCell = new Cell(valueLeft);
+    // shares left cell
+    let sharesLeft = string.formatMoney(trade.valueLeft, '$');
+    let sharesLeftCell = new Cell(sharesLeft);
 
     // executed at cell
-    let executedAt = string.formatDate(trade.executedAt);
+    let executedAt = trade.executedAt ? string.formatDate(trade.executedAt) : 'Unknown';
     let executedAtCell = new Cell(executedAt);
 
     // url cell
@@ -88,6 +86,6 @@ function _tradeToRow(trade) {
 
     return new Row([
         companyCell, insiderCell, relationshipCell, typeCell, shareCountCell,
-        priceCell, valueCell, valueLeftCell, executedAtCell, urlCell
+        priceCell, valueCell, sharesLeftCell, executedAtCell, urlCell
     ]);
 }

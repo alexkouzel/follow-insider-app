@@ -46,9 +46,10 @@ export class SearchBar {
                     break;
                 case 'Enter':
                     let hintsTag = this._hintsTag;
-                    
-                    if (hintsTag.length !== 0) 
-                        hintsTag[this.focus].click();
+
+                    hintsTag.length !== 0
+                        ? hintsTag[this.focus].click()
+                        : this.onSearch('', '');
             }
         });
 

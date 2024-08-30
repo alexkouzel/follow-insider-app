@@ -3,18 +3,26 @@ import { Insider, Company, Form, Trade } from './models.js';
 import { Mocker } from './mocker.js';
 import * as http from '/scripts/utils/http.js';
 
-const serverUrl = Config.serverUrl;
+const SERVER_URL = Config.serverUrl;
+
+const CONVERT_COMPANY = json => new Company(json);
+const CONVERT_INSIDER = json => new Insider(json);
+const CONVERT_TRADE = json => new Trade(json);
+const CONVERT_FORM = json => new Form(json);
 
 export class Insiders {
-    static async page(page, pageSize = 10) {
+
+    static async page(idx = 0, size = 10) {
 
         if (Config.debugMode) {
             await debugDelay();
-            return Mocker.insiders(pageSize);
+            return Mocker.insiders(size);
         }
 
-        let url = `${serverUrl}/insiders?page=${page}`;
-        return await http.getModels(url, json => new Insider(json));
+        let url = `${SERVER_URL}/insiders`;
+        let body = { pageIdx: idx, pageSize: size };
+
+        return await http.getModels(url, CONVERT_INSIDER, body);
     }
 
     static async cik(cik) {
@@ -24,8 +32,9 @@ export class Insiders {
             return Mocker.insider();
         }
 
-        let url = `${serverUrl}/insiders/${cik}`;
-        return await http.getModel(url, json => new Insider(json));
+        let url = `${SERVER_URL}/insiders/${cik}`;
+
+        return await http.getModel(url, CONVERT_INSIDER);
     }
 
     static async forms(cik) {
@@ -35,8 +44,9 @@ export class Insiders {
             return Mocker.forms(4, true);
         }
 
-        let url = `${serverUrl}/insiders/${cik}/forms`;
-        return await http.getModels(url, json => new Form(json));
+        let url = `${SERVER_URL}/insiders/${cik}/forms`;
+
+        return await http.getModels(url, CONVERT_FORM);
     }
 
     static async search(text, limit) {
@@ -46,21 +56,25 @@ export class Insiders {
             return Mocker.insiders(limit);
         }
 
-        let url = `${serverUrl}/insiders/search?text=${encodeURIComponent(text)}&limit=${limit}`;
-        return await http.getModels(url, json => new Insider(json));
+        let url = `${SERVER_URL}/insiders/search`;
+        let body = { text: text, limit: limit };
+
+        return await http.getModels(url, CONVERT_INSIDER, body);
     }
 }
 
 export class Companies {
-    static async page(page, pageSize = 10) {
+    static async page(idx = 0, size = 10) {
 
         if (Config.debugMode) {
             await debugDelay();
-            return Mocker.companies(pageSize);
+            return Mocker.companies(size);
         }
 
-        let url = `${serverUrl}/companies?page=${page}`;
-        return await http.getModels(url, json => new Company(json));
+        let url = `${SERVER_URL}/companies`;
+        let body = { pageIdx: idx, pageSize: size };
+
+        return await http.getModels(url, CONVERT_COMPANY, body);
     }
 
     static async cik(cik) {
@@ -70,8 +84,9 @@ export class Companies {
             return Mocker.company();
         }
 
-        let url = `${serverUrl}/companies/${cik}`;
-        return await http.getModel(url, json => new Company(json));
+        let url = `${SERVER_URL}/companies/${cik}`;
+
+        return await http.getModel(url, CONVERT_COMPANY);
     }
 
     static async forms(cik) {
@@ -81,8 +96,9 @@ export class Companies {
             return Mocker.forms(4, true);
         }
 
-        let url = `${serverUrl}/companies/${cik}/forms`;
-        return await http.getModels(url, json => new Form(json));
+        let url = `${SERVER_URL}/companies/${cik}/forms`;
+
+        return await http.getModels(url, CONVERT_FORM);
     }
 
     static async search(text, limit) {
@@ -92,21 +108,25 @@ export class Companies {
             return Mocker.companies(limit);
         }
 
-        let url = `${serverUrl}/companies/search?text=${encodeURIComponent(text)}&limit=${limit}`;
-        return await http.getModels(url, json => new Company(json));
+        let url = `${SERVER_URL}/companies/search`;
+        let body = { text: text, limit: limit };
+
+        return await http.getModels(url, CONVERT_COMPANY, body);
     }
 }
 
 export class Forms {
-    static async page(page, pageSize = 10) {
+    static async page(idx = 0, size = 10) {
 
         if (Config.debugMode) {
             await debugDelay();
-            return Mocker.forms(pageSize, true);
+            return Mocker.forms(size, true);
         }
 
-        let url = `${serverUrl}/forms?page=${page}`;
-        return await http.getModels(url, json => new Form(json));
+        let url = `${SERVER_URL}/forms`;
+        let body = { pageIdx: idx, pageSize: size };
+
+        return await http.getModels(url, CONVERT_FORM, body);
     }
 
     static async count() {
@@ -116,32 +136,39 @@ export class Forms {
             return 1000;
         }
 
-        let url = `${serverUrl}/forms/count`;
+        let url = `${SERVER_URL}/forms/count`;
+
         return await http.getData(url);
     }
 }
 
 export class Trades {
-    static async page(page = 0, pageSize = 10, filters) {
+    static async page(idx = 0, size = 10, tradeFilters) {
 
         if (Config.debugMode) {
             await debugDelay();
-            return Mocker.trades(pageSize, true);
+            return Mocker.trades(size, true);
         }
 
-        let url = `${serverUrl}/trades?page=${page}&pageSize=${pageSize}`;
-        return await http.getModels(url, json => new Trade(json), filters);
+        let url = `${SERVER_URL}/trades`;
+        let body = { 
+            getPageRequest: { pageIdx: idx, pageSize: size }, 
+            tradeFilters: tradeFilters
+        };
+
+        return await http.getModels(url, CONVERT_TRADE, body);
     }
 
-    static async count(filters) {
+    static async count(tradeFilters) {
 
         if (Config.debugMode) {
             await debugDelay();
             return 1000;
         }
 
-        let url = `${serverUrl}/trades/count`;
-        return await http.getData(url, filters);
+        let url = `${SERVER_URL}/trades/count`;
+
+        return await http.getData(url, tradeFilters);
     }
 }
 
