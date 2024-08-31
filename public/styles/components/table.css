@@ -5,7 +5,7 @@
     border: var(--small-border);
     border-top: 0.6rem solid var(--light-grey);
     border-radius: 1.5rem;
-    min-height: 61rem;
+    min-height: 55.1rem;
     overflow-x: auto;
 }
 
@@ -16,11 +16,15 @@ table {
 
 th {
     border-bottom: .1rem solid var(--light-grey);
+    white-space: nowrap;
+}
+
+td {
+    max-width: 25rem;
 }
 
 td, th {
     padding: 1.5rem 2.5rem;
-    white-space: nowrap;
 }
 
 /* empty state illustration */
@@ -40,10 +44,11 @@ td, th {
 
 .table-nav-buttons {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .table-nav-buttons button {
-    padding: .5rem 1rem;
+    padding: .4rem .9rem;
     border-radius: 1rem;
 }
 
@@ -55,11 +60,16 @@ td, th {
     .table-nav {
         flex-direction: column;
         align-items: center;
+        text-align: center;
         gap: 2rem;
     }
 
+    .table-nav-buttons {
+        justify-content: center;
+    }
+
     .table-nav-buttons button {
-        padding: .4rem .8rem;
+        padding: .4rem .6rem;
     }
 }
 

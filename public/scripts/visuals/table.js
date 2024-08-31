@@ -1,4 +1,5 @@
 import { Loader } from '/scripts/visuals/loader.js';
+import * as string from '/scripts/utils/string.js';
 
 /* props: align, pageSize, rangeSize, loadCount, loadPage */
 export class Table {
@@ -105,6 +106,7 @@ export class Table {
     }
 
     _onError() {
+        this._clear();
         this.loader.hide();
         this.wrapperTag.innerHTML += `
             <div class='abs-ctr empty-state'>
@@ -152,10 +154,11 @@ export class Table {
     _buildNav() {
         let firstRowIdx = this.currPage * this.props.pageSize + 1;
         let lastRowIdx = firstRowIdx + this.currPageSize - 1;
+        let items = string.formatNumberLong(this.rowCount);
 
         let range = document.createElement('p');
         range.classList.add('table-nav-range');
-        range.innerText = `${firstRowIdx} - ${lastRowIdx} of ${this.rowCount} items`;
+        range.innerText = `${firstRowIdx} - ${lastRowIdx} of ${items} items`;
 
         let nav = document.createElement('div');
         nav.classList.add('table-nav');
@@ -294,13 +297,21 @@ export class Row {
 /* props: onclick, color, max_width, min_width, class, icon, iconSize */
 export class Cell {
     constructor(value, props) {
-        this.value = value;
+        this.value = value ?? 'N/A';
+        
         this.props = props ?? {};
+        this.props.white_space = this.props.white_space ?? 'nowrap';
+
+        if (!value) {
+            this.props.color = 'var(--gray)';
+        }
     }
 
     build(align) {
         let cell = document.createElement('td');
 
+        cell.style.whiteSpace = this.props.white_space;
+        
         if (this.props.onclick) {
             cell.onclick = this.props.onclick;
             cell.classList.add('link');
