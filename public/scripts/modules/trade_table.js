@@ -63,17 +63,12 @@ function _companyCell(form) {
     let company = `${form.company.name} (${form.company.ticker})`;
     return new Cell(company, {
         // onclick: () => window.open('/company/' + form.company.cik)
-        white_space: 'normal',
-        min_width: '15rem' 
     });
 }
 
 function _insiderCell(form) {
     let insider = form.insider.name;
-    return new Cell(insider, { 
-        white_space: 'normal',
-        min_width: '15rem' 
-    });
+    return new Cell(insider);
 }
 
 function _relationshipCell(form) {
@@ -83,10 +78,7 @@ function _relationshipCell(form) {
         relationship = form.insiderTitles.join(', ');
     }
 
-    return new Cell(relationship, { 
-        white_space: 'normal',
-        min_width: '15rem'
-    });
+    return new Cell(relationship);
 }
 
 function _typeCell(trade) {

@@ -20,7 +20,9 @@ th {
 }
 
 td {
-    max-width: 25rem;
+    max-width: 20rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 td, th {
