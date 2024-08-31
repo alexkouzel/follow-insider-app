@@ -48,8 +48,6 @@ function postData(url, contentType, body) {
 }
 
 async function request(url, props) {
-    console.log(props.method + ' ' + url);
-
     props['redirect'] = 'follow';
 
     try {

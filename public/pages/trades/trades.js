@@ -98,7 +98,7 @@ function convertDate(date) {
     let now = new Date();
     let number = parseInt(date.substring(1));
 
-    return new Date(now - number * types[date.charAt(0)]);
+    return new Date(now.getTime() - number * types[date.charAt(0)]);
 }
 
 function paramsToFilters(params) {

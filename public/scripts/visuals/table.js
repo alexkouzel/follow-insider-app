@@ -23,22 +23,32 @@ export class Table {
         // add loader between pages
         this.loader = new Loader(this.wrapperTag);
 
-        // load the total number of rows
-        props.loadCount().then(rowCount => {
+        this._loadFirstPage();
+    }
 
-            if (rowCount == 0) {
-                this._onEmpty();
-                return;
-            }
+    _loadFirstPage() {
+        let futurePage = this.props.loadPage(0);
+        let futureCount = this.props.loadCount();
 
-            this.rowCount = rowCount;
-            this.currPageSize = Math.min(this.props.pageSize, this.rowCount);
-            this.pageCount = Math.ceil(this.rowCount / props.pageSize);
-            this.rangeCount = Math.ceil(this.pageCount / props.rangeSize);
+        Promise.all([futurePage, futureCount])
+            .then(([rows, rowCount]) => {
 
-            // load first page
-            this._loadPage();
-        });
+                if (rowCount == 0) {
+                    this._onEmpty();
+                    return;
+                }
+
+                this.rowCount = rowCount;
+                this.currPageSize = Math.min(this.props.pageSize, this.rowCount);
+                this.pageCount = Math.ceil(this.rowCount / this.props.pageSize);
+                this.rangeCount = Math.ceil(this.pageCount / this.props.rangeSize);
+
+                this._addRows(rows);
+                this._updateNav();
+            })
+            .catch(() => {
+                this._onError();
+            });
     }
 
     _loadPage() {
@@ -115,7 +125,7 @@ export class Table {
         let table = document.createElement('div');
         table.classList.add('table');
         table.appendChild(this._buildWrapper());
-        
+
         let nav = document.createElement('div');
         nav.classList.add('table-nav');
         table.appendChild(nav);
