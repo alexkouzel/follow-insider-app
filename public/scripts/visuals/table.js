@@ -59,7 +59,7 @@ export class Table {
         let idx = this.counter;
 
         this.future = new Promise(async (resolve, _) => {
-            let page = await this.props.loadPage(this.currPage);
+            let page = await this.props.loadPage(this.currPage, this.rowCount);
             resolve([idx, page]);
         });
 

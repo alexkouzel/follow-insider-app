@@ -143,7 +143,7 @@ export class Forms {
 }
 
 export class Trades {
-    static async page(idx = 0, size = 10, tradeFilters) {
+    static async page(idx = 0, size = 10, tradeFilters, count) {
 
         if (Config.debugMode) {
             await debugDelay();
@@ -152,7 +152,7 @@ export class Trades {
 
         let url = `${SERVER_URL}/trades`;
         let body = { 
-            getPageRequest: { pageIdx: idx, pageSize: size }, 
+            getPageRequest: { pageIdx: idx, pageSize: size, count: count }, 
             tradeFilters: tradeFilters
         };
 

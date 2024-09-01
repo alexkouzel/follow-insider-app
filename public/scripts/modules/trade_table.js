@@ -4,13 +4,13 @@ import * as string from '/scripts/utils/string.js';
 
 export function initTradeTable(container, filters) {
     let columns = ['Company', 'Insider', 'Relationship', 'Type', 'Price', 'Quantity', 'Owned', 'Δ Owned', 'Value', 'Trade Date', 'Filing Date'];
-    let align = ['start', 'start', 'start', 'center', 'end', 'end', 'end', 'end', 'end', 'center', 'center']
+    let align = ['start', 'start', 'start', 'center', 'end', 'end', 'end', 'end', 'end', 'end', 'end']
 
     let pageSize = 10;
 
     let props = {
         align: align,
-        loadPage: (idx) => _loadPage(idx, pageSize, filters),
+        loadPage: (idx, count) => _loadPage(idx, pageSize, filters, count),
         loadCount: () => _loadCount(filters),
         pageSize: pageSize,
     };
@@ -25,8 +25,8 @@ async function _loadCount(filters) {
     return await Trades.count(filters);
 }
 
-async function _loadPage(idx, pageSize, filters) {
-    let trades = await Trades.page(idx, pageSize, filters);
+async function _loadPage(idx, pageSize, filters, count) {
+    let trades = await Trades.page(idx, pageSize, filters, count);
     return _tradesToRows(trades);
 }
 
