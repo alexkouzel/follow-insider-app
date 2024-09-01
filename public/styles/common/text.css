@@ -2,9 +2,6 @@
 
 * {
     font-family: 'Inter', sans-serif;
-}
-
-h1, h2, h3 {
     color: var(--dark-blue)
 }
 
@@ -28,13 +25,13 @@ h4, li {
     font-weight: 500;
 }
 
-p, label, button, input, td, th {
+p, label, button, input, td {
     font-size: 1.3rem;
     font-weight: 400;
-    line-height: 2rem;
 }
 
 th {
+    font-size: 1.3rem;
     font-weight: 500;
 }
 

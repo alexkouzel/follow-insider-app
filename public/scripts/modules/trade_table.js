@@ -4,7 +4,7 @@ import * as string from '/scripts/utils/string.js';
 
 export function initTradeTable(container, filters) {
     let columns = ['Company', 'Insider', 'Relationship', 'Type', 'Price', 'Quantity', 'Owned', 'Δ Owned', 'Value', 'Trade Date', 'Filing Date'];
-    let align = ['start', 'start', 'start', 'center', 'end', 'end', 'end', 'end', 'end', 'end', 'end']
+    let align = ['start', 'start', 'start', 'center', 'end', 'end', 'end', 'end', 'end', 'center', 'center']
 
     let pageSize = 10;
 
@@ -150,7 +150,7 @@ function _filedAtCell(form) {
     let filedAt = string.formatDate(form.filedAt);
 
     return new Cell(filedAt, {
-        onclick: () => window.open(form.xmlUrl)
+        onclick: () => window.open(form.xmlUrl),
     });
 }
 
@@ -167,13 +167,13 @@ function _red(value) {
 
 function _color(value, red, green, blue) {
     const minValue = 10;
-    const maxValue = 10_000_000;
+    const maxValue = 3_000_000;
 
     // normalize the number to a value between 0 and 255
     value = (value - minValue) / (maxValue - minValue);
-    value = Math.min(Math.max(value, 0), 1);
-    value = Math.pow(value, 0.25);
-    value *= 50;
+    value = Math.min(Math.max(value, 0.005), 1);
+    value = Math.pow(value, 0.3);
+    value *= 40;
 
     // adjust the intensity to make the color darker or brighter
     const intensity = Math.round(255 - value);

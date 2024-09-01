@@ -49,9 +49,10 @@
 }
 
 .hints-active {
+    color: white;
     background-color: var(--blue) !important;
 }
 
-.hints-active {
+.hints-active>* {
     color: white;
 }

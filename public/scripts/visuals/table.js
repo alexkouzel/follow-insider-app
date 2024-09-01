@@ -316,6 +316,9 @@ export class Cell {
             cell.onclick = this.props.onclick;
             cell.classList.add('link');
         }
+        if (this.props.weight) {
+            cell.style.fontWeight = this.props.weight;
+        }
         if (this.props.color) {
             cell.style.color = this.props.color;
         }

@@ -5,7 +5,7 @@
     border: var(--small-border);
     border-top: 0.6rem solid var(--light-grey);
     border-radius: 1.5rem;
-    min-height: 55.1rem;
+    min-height: 55rem;
     overflow-x: auto;
 }
 
@@ -26,7 +26,8 @@ td {
 }
 
 td, th {
-    padding: 1.5rem 2.5rem;
+    padding: 0 2.5rem;
+    height: 5rem;
 }
 
 /* empty state illustration */
@@ -50,7 +51,7 @@ td, th {
 }
 
 .table-nav-buttons button {
-    padding: .4rem .9rem;
+    padding: .4rem 1rem;
     border-radius: 1rem;
 }
 
@@ -68,10 +69,6 @@ td, th {
 
     .table-nav-buttons {
         justify-content: center;
-    }
-
-    .table-nav-buttons button {
-        padding: .4rem .6rem;
     }
 }
 
