@@ -1,9 +1,11 @@
 @import "loader.css";
 
-.table-wrapper {
+.table {
     position: relative; 
+}
+
+.table-wrapper {
     border: var(--small-border);
-    /* border-top: 0.6rem solid var(--light-grey); */
     border-radius: 1.5rem;
     min-height: 55rem;
     overflow-x: auto;
@@ -77,6 +79,7 @@ td, th {
 /* -------------------------------- */
 
 .empty-state {
+    transform: translateY(-2.5rem);
     text-align: center;
 }
 

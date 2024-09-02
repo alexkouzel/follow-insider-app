@@ -95,24 +95,25 @@ export class Table {
     }
 
     _onEmpty() {
-        this.loader.hide();
-        this.wrapperTag.innerHTML += `
-            <div class='abs-ctr empty-state'>
-                <img src='/assets/icons/whoops.svg' alt="table error">
-                <h3>Whoops!</h3>
-                <p>No data available at the moment</p>
-            <div>
-        `;
+        this._whoops('No data available at the moment');
     }
 
     _onError() {
         this._clear();
+        this._whoops('Something went wrong on the server');
+    }
+
+    _whoops(message) {
+        this._emptyState('/assets/icons/whoops.svg', 'Whoops!', message);
+    }
+
+    _emptyState(src, title, message) {
         this.loader.hide();
-        this.wrapperTag.innerHTML += `
+        this.tag.innerHTML += `
             <div class='abs-ctr empty-state'>
-                <img src='/assets/icons/whoops.svg' alt="table error">
-                <h3>Whoops!</h3>
-                <p>Something went wrong on the server</p>
+                <img src='${src}' alt="table error">
+                <h3>${title}</h3>
+                <p>${message}</p>
             <div>
         `;
     }
@@ -298,7 +299,7 @@ export class Row {
 export class Cell {
     constructor(value, props) {
         this.value = value ?? 'N/A';
-        
+
         this.props = props ?? {};
         this.props.white_space = this.props.white_space ?? 'nowrap';
 
@@ -311,7 +312,7 @@ export class Cell {
         let cell = document.createElement('td');
 
         cell.style.whiteSpace = this.props.white_space;
-        
+
         if (this.props.onclick) {
             cell.onclick = this.props.onclick;
             cell.classList.add('link');
