@@ -36,7 +36,7 @@ export function formatDate(value, options) {
     if (value == null) return null;
     
     options = options || { month: 'short', day: 'numeric', year: 'numeric' };
-    let date = Array.isArray(value) ? new Date(value[0], value[1], value[2]) : new Date(value);
+    let date = Array.isArray(value) ? new Date(value[0], value[1] - 1, value[2]) : new Date(value);
 
     return date.toLocaleDateString('en-US', options);
 }

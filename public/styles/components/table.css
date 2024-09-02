@@ -3,7 +3,7 @@
 .table-wrapper {
     position: relative; 
     border: var(--small-border);
-    border-top: 0.6rem solid var(--light-grey);
+    /* border-top: 0.6rem solid var(--light-grey); */
     border-radius: 1.5rem;
     min-height: 55rem;
     overflow-x: auto;

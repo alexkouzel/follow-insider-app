@@ -36,7 +36,7 @@ export class Trade {
         this.sharePrice = sharePrice;
         this.sharesLeft = sharesLeft;
         this.valueLeft = valueLeft;
-        this.executedAt = new Date(executedAt);
+        this.executedAt = executedAt;
         this.type = type;
 
         if (form) {
